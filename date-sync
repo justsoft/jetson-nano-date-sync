@@ -1,0 +1,30 @@
+#! /bin/sh
+# Updates system time if ntp or ntpdate doesn't work
+# listening on new addresses.
+# Put this file under /etc/network/if-up.d/ and chmod +x for it
+
+set -e
+
+# Don't bother to restart sshd when lo is configured.
+if [ "$IFACE" = lo ]; then
+        exit 0
+fi
+
+# Only run from ifup.
+if [ "$MODE" != start ]; then
+        exit 0
+fi
+
+if [ "$ADDRFAM" != inet ] && [ "$ADDRFAM" != inet6 ]; then
+        exit 0
+fi
+
+# Is /usr mounted?
+if [ ! -e /usr/bin/wget ]; then
+        exit 0
+fi
+
+# Is time OK already?
+if [ $(date +%Y) -eq 2018 ]; then
+        date --set="$(wget -qS --max-redirect 0 http://bing.com/ 2>&1|grep -oiP 'Date: \K.+')" 2>&1 > /dev/shm/date-sync.log
+fi
