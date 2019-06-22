@@ -1,0 +1,13 @@
+[Unit]
+Description=Date Sync Service
+Wants=network-online.target
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+#WorkingDirectory=/etc/systemd
+ExecStart=/bin/sh -c sh -c 'date --set="$(wget -qS --max-redirect 0 http://bing.com/ 2>&1|grep -oiP '"'Date: \\K.+'"')"'
+
+[Install]
+WantedBy=multi-user.target
