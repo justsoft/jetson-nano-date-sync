@@ -5,9 +5,8 @@ After=network.target
 
 [Service]
 Type=simple
-User=pi
 WorkingDirectory=/etc/systemd
-ExecStart=/bin/sh -c 'date --set="$(wget -qS --max-redirect 0 http://bing.com/ 2>&1|grep -oiP '"'Date: \\K.+'"')"'
+ExecStart=/bin/bash -c 'while true;do T="$(wget -qS --max-redirect 0 http://bing.com/ 2>&1|grep -oiP '"'Date: \\K.+'"')";echo "[$T]";[ -n "$T" ] && date --set="$T" && break;sleep 1;done'
 
 [Install]
 WantedBy=multi-user.target
