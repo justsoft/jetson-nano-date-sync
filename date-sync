@@ -26,5 +26,5 @@ fi
 
 # Is time OK already?
 if [ $(date +%Y) -eq 2018 ]; then
-        date --set="$(wget -qS --max-redirect 0 http://bing.com/ 2>&1|grep -oiP 'Date: \K.+')" 2>&1 > /dev/shm/date-sync.log
+        date --set="$(wget -qS --max-redirect 0 http://bing.com/ 2>&1|grep -oiP 'Date: \K.+')" > /dev/shm/date-sync.log 2>&1
 fi
